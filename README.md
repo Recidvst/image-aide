@@ -1,6 +1,6 @@
 
-# Image cropping/optimisation/etc tool
+# ImageAide.js
 
-## Triggered on page load by client, requests cropping etc. in real time from server and replaces image in situ
+### Tool is triggered on page load by JS client, requests cropping etc. in real time from Node server and replaces image in situ
 
-## No need for external image hosting as server grabs images directly from public urls
+### No need for external image hosting as server grabs images directly from public urls
