@@ -8,43 +8,62 @@
 // 6. receive server response and decode base64 string
 // 7. add to cache and change the image src
 // 8. on server error, fetch the original image directly (not cropped etc.)
+// 9. OR, instead of base64 use blob as this can be directly converted into an img src
 
+import 'regenerator-runtime/runtime';
 import isValidURL from './util/isValidURL';
+import blobToImageURL from './util/blobToImageURL';
+import b64testimage from './util/b64testimage';
 
 function triggerImageScraper() {
   // grab all images to be processed
-  var imagesArr = [].slice.call(document.querySelectorAll('[data-imgaide]'));
-  // loop
+  var imagesArr = [].slice.call(document.querySelectorAll('[data-imgaide-src]'));
+  
   imagesArr.forEach( element => {
-    let nSrc = element.getAttribute('[data-imgaide-src');
+    let nSrc = element.getAttribute('data-imgaide-src');
     // check validity and then trigger processing or fallback
     if (nSrc && isValidURL(nSrc)) {
-      // handle absolute vs relative 
-      if (!'/^https?:\/\//i;'.test(nSrc)) {
+      // handle absolute vs relative
+      if(/^(:\/\/)/.test(nSrc)){
+        nSrc = 'http://'.concat(nSrc);
+      }
+      if(!/^(f|ht)tps?:\/\//i.test(nSrc)){
         nSrc = 'https://'.concat(nSrc);
       }
-      processImage(element, nSrc);
-    }
-    else if (isValidURL(element.src)) {
-      fallback(element.src);
+      requestImage(element, nSrc);
     }
     else {
-      console.error('Something has gone wrong...', element);
+      fallback(element.src);
     }
   });
 }
 
-// function to handle the actual image swapping
-function processImage(el, src) {
+// function to request the image
+function requestImage(el, src) {
   if (!el || !src || !isValidURL(src)) return false;
 
-  console.log(el, src);
+  // TODO: this is just a local sanity test, not connected to api
+  fetch('data:image/png;base64,' + b64testimage()).then(function(response) {
+    return response.blob();
+  }).then(myBlob => {
+    return blobToImageURL(myBlob);
+  }).then(url => {
+    if (url && url.indexOf('blob:http') === 0) {
+      el.src = url;
+    }
+    else {
+      console.error('Something has gone wrong...', el);
+    }
+  });
 }
 
 // function to be triggered in case of error - simply use the original image
 function fallback(src) {
   if (isValidURL(src)) {
     element.src = src;
+  }
+  else {
+    console.error('Something has gone wrong...', element);
   }
 }
 

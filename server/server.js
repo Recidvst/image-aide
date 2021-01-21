@@ -5,5 +5,6 @@
 // 3. if error, return fail
 // 4. if found, do the crop/optimisation etc. required
 // 5. encode result as base64 and return to the client
+// 6. OR encode as blob and return
 
 // can this be a serverless function rather than a full api on a droplet?
