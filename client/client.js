@@ -13,6 +13,7 @@
 import 'regenerator-runtime/runtime';
 import isValidURL from './util/isValidURL';
 import blobToImageURL from './util/blobToImageURL';
+import bufferToImageURL from './util/bufferToImageURL';
 import b64testimage from './util/b64testimage';
 
 function triggerImageScraper() {
@@ -42,11 +43,10 @@ function triggerImageScraper() {
 function requestImage(el, src) {
   if (!el || !src || !isValidURL(src)) return false;
 
-  // TODO: this is just a local sanity test, not connected to api
-  fetch('data:image/png;base64,' + b64testimage()).then(function(response) {
+  fetch('https://source.unsplash.com/random').then(function(response) {
     return response.blob();
-  }).then(myBlob => {
-    return blobToImageURL(myBlob);
+  }).then(myBuffer => {
+    return bufferToImageURL(myBuffer);
   }).then(url => {
     if (url && url.indexOf('blob:http') === 0) {
       el.src = url;
