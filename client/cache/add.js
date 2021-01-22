@@ -4,9 +4,10 @@ import isArray from '../util/isArray';
 
 // ADD CACHE ITEM
 function addCacheItem(cacheName = window.location.hostname, imageURL) {
+  console.log(addCacheItem);
   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
 
-  caches.open(cacheName).then( cache => {
+  caches.open(`${cacheName}__imgaide`).then( cache => {
     cache.add(url).then( () => {
       // console.log("Cache item added");
     });
@@ -18,7 +19,7 @@ function addCacheItemArray(cacheName = window.location.hostname, imageArray) {
   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isArray(imageArray) ) return false;
   // TODO: loop over array here and remove any URLs which are not valid
 
-  caches.open(cacheName).then( cache => {
+  caches.open(`${cacheName}__imgaide`).then( cache => {
     cache.addAll(urls).then( () => {
       // console.log("Cache array of items added");
     });
@@ -29,8 +30,8 @@ function addCacheItemArray(cacheName = window.location.hostname, imageArray) {
 function putCacheItemManually(cacheName = window.location.hostname, imageURL, responseData) {
   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
 
-  caches.open(cacheName).then( cache => {
-    cache.put(`${imageURL}__uniqueID`, new Response(responseData));
+  caches.open(`${cacheName}__imgaide`).then( cache => {
+    cache.put(`${imageURL}`, new Response(responseData));
   })
 }
 
@@ -39,7 +40,7 @@ function putCacheItemFromFetch(cacheName = window.location.hostname, imageURL) {
   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
 
   fetch(imageURL).then(res => {
-    return caches.open(cacheName).then(cache => {
+    return caches.open(`${cacheName}__imgaide`).then(cache => {
       return cache.put(imageURL, res);
     })
   })

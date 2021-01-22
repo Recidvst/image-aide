@@ -14,12 +14,13 @@ import 'regenerator-runtime/runtime';
 import isValidURL from './util/isValidURL';
 import bufferToImageURL from './util/bufferToImageURL';
 import { putCacheItemManually } from './cache/add';
+import { getCacheItem } from './cache/get';
 
 function triggerImageScraper() {
   // grab all images to be processed
   var imagesArr = [].slice.call(document.querySelectorAll('[data-imgaide-src]'));
   
-  imagesArr.forEach( element => {
+  imagesArr.forEach( async (element) => {
     let nSrc = element.getAttribute('data-imgaide-src');
     // check validity and then trigger processing or fallback
     if (nSrc && isValidURL(nSrc)) {
@@ -30,10 +31,18 @@ function triggerImageScraper() {
       if(!/^(f|ht)tps?:\/\//i.test(nSrc)){
         nSrc = 'https://'.concat(nSrc);
       }
-      requestImage(element, nSrc);
+
+      // check cache in case exact image has been requested before
+      const inCacheURL = await getCacheItem('testcachename', nSrc);
+      if (inCacheURL && inCacheURL && inCacheURL.indexOf('blob:http') === 0) {
+        element.src = inCacheURL;
+      }
+      // otherwise fetch the image
+      else {
+        requestImage(element, nSrc);
+      }
     }
     else {
-      console.log(fallback);
       fallback(element, element.src);
     }
   });
@@ -60,13 +69,13 @@ async function requestImage(el, src) {
   // convert to type Buffer (browser)
   const arrayBufferView = new Uint8Array(buffer);
   // convert to an ObjectURL
-  const imageURL = await bufferToImageURL(arrayBufferView);
+  const ObjectURL = await bufferToImageURL(arrayBufferView);
 
-  if (imageURL && imageURL.indexOf('blob:http') === 0) {
+  if (ObjectURL && ObjectURL.indexOf('blob:http') === 0) {
     // if ok, update image src
-    el.src = imageURL;
+    el.src = ObjectURL;
     // add to cache
-    putCacheItemManually('testcachename', src, imageURL);
+    putCacheItemManually('testcachename', src, arrayBufferView);
   }
   else {
     console.error('Something has gone wrong...', el);

@@ -21,7 +21,6 @@ router.post('/request', async (req, res) => {
     res.status(200).send(buffer);
   }
   else {
-    console.log('uh-oh');
     res.status(400).send('Please provide a URL in the request body');
   }
 });
