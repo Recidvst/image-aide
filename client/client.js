@@ -12,9 +12,8 @@
 
 import 'regenerator-runtime/runtime';
 import isValidURL from './util/isValidURL';
-import blobToImageURL from './util/blobToImageURL';
 import bufferToImageURL from './util/bufferToImageURL';
-import b64testimage from './util/b64testimage';
+import { putCacheItemManually } from './cache/add';
 
 function triggerImageScraper() {
   // grab all images to be processed
@@ -34,31 +33,48 @@ function triggerImageScraper() {
       requestImage(element, nSrc);
     }
     else {
-      fallback(element.src);
+      console.log(fallback);
+      fallback(element, element.src);
     }
   });
 }
 
 // function to request the image
-function requestImage(el, src) {
+async function requestImage(el, src) {
   if (!el || !src || !isValidURL(src)) return false;
 
-  fetch('https://source.unsplash.com/random').then(function(response) {
-    return response.blob();
-  }).then(myBuffer => {
-    return bufferToImageURL(myBuffer);
-  }).then(url => {
-    if (url && url.indexOf('blob:http') === 0) {
-      el.src = url;
-    }
-    else {
-      console.error('Something has gone wrong...', el);
-    }
+  const response = await fetch('http://localhost:3001/image/request', { // obviously this needs to change, will be handled by an ENV variable
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "url": src
+    })
   });
+
+  // get as type ArrayBuffer (Node)
+  const buffer = await response.arrayBuffer();
+  // convert to type Buffer (browser)
+  const arrayBufferView = new Uint8Array(buffer);
+  // convert to an ObjectURL
+  const imageURL = await bufferToImageURL(arrayBufferView);
+
+  if (imageURL && imageURL.indexOf('blob:http') === 0) {
+    // if ok, update image src
+    el.src = imageURL;
+    // add to cache
+    putCacheItemManually('testcachename', src, imageURL);
+  }
+  else {
+    console.error('Something has gone wrong...', el);
+  }
 }
 
 // function to be triggered in case of error - simply use the original image
-function fallback(src) {
+function fallback(element,src) {
   if (isValidURL(src)) {
     element.src = src;
   }

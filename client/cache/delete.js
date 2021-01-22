@@ -6,7 +6,7 @@ function deleteCacheItem(cacheName = window.location.hostname) {
   if (!isCacheAvailable) return false;
 
   caches.delete(cacheName).then(function() {
-    console.log('Cache block successfully deleted!');
+    // console.log('Cache block successfully deleted!');
   });
 }
 
@@ -16,7 +16,7 @@ function deleteCacheBlock(cacheName = window.location.hostname, imageURL) {
 
   caches.open(cacheName).then(cache => {
     cache.delete(imageURL).then(function() {
-      console.log('Cache item successfully deleted!');
+      // console.log('Cache item successfully deleted!');
     });
   })
 }

@@ -8,9 +8,7 @@ function getCacheItem(cacheName = window.location.hostname, imageURL) {
   
   caches.open(cacheName).then(cache => {
     cache.match(imageURL).then(result => result.blob()).then(blob => {
-      var parsedItem = await blobToBase64(foundItem);
-      console.log(blob);
-      console.log(parsedItem);
+      // console.log(blob);
     });
   });
 }
@@ -37,7 +35,7 @@ async function getFilteredCacheItems(conditionString = '?') {
         });
       }
     }
-    console.log(resultsArr);
+    // console.log(resultsArr);
   }
 
   return result;

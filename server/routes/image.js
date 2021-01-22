@@ -15,15 +15,10 @@ router.get('/request', (req, res) => {
 router.post('/request', async (req, res) => {
   if (req.body.url) {
     const response = await fetch(req.body.url);
-    // get as Node Buffer
+    // get as type ArrayBuffer (Node)
     const buffer = await response.buffer();
-    // convert to browser ArrayBuffer
-    var ab = new ArrayBuffer(buffer.length);
-    var view = new Uint8Array(ab);
-    for (var i = 0; i < buf.length; ++i) {
-      view[i] = buf[i];
-    }
-    res.status(200).send(ab);
+    // let base64Buffer = buffer.toString('base64');
+    res.status(200).send(buffer);
   }
   else {
     console.log('uh-oh');
