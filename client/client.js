@@ -32,12 +32,21 @@ function triggerImageScraper() {
         nSrc = 'https://'.concat(nSrc);
       }
 
-      // check cache in case exact image has been requested before
-      const inCacheURL = await getCacheItem('testcachename', nSrc);
-      if (inCacheURL && inCacheURL && inCacheURL.indexOf('blob:http') === 0) {
+      
+      // if nocache attribute set then skip cache (so content is always fresh)
+      let inCacheURL = null;
+      const nocachePreference = element.hasAttribute('data-imgaide-nocache');
+      
+      if (!nocachePreference) {
+        // else check cache in case exact image has been requested before
+        inCacheURL = await getCacheItem('testcachename', nSrc);        
+      }
+      
+      // replace image with cached image
+      if (inCacheURL && inCacheURL.indexOf('blob:http') === 0) {
         element.src = inCacheURL;
       }
-      // otherwise fetch the image
+      // otherwise fetch a fresh image
       else {
         requestImage(element, nSrc);
       }
