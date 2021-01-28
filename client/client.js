@@ -31,7 +31,6 @@ function triggerImageScraper() {
       if(!/^(f|ht)tps?:\/\//i.test(nSrc)){
         nSrc = 'https://'.concat(nSrc);
       }
-
       
       // if nocache attribute set then skip cache (so content is always fresh)
       let inCacheURL = null;
@@ -41,13 +40,14 @@ function triggerImageScraper() {
         // else check cache in case exact image has been requested before
         inCacheURL = await getCacheItem('testcachename', nSrc);        
       }
-      
+
       // replace image with cached image
       if (inCacheURL && inCacheURL.indexOf('blob:http') === 0) {
         element.src = inCacheURL;
       }
       // otherwise fetch a fresh image
       else {
+        console.log('requestImage', nSrc);
         requestImage(element, nSrc);
       }
     }
@@ -61,6 +61,11 @@ function triggerImageScraper() {
 async function requestImage(el, src) {
   if (!el || !src || !isValidURL(src)) return false;
 
+  const errorHandler = () => {
+    fallback(el, el.src);
+    return false;
+  };
+
   const response = await fetch('http://localhost:3001/image/request', { // obviously this needs to change, will be handled by an ENV variable
     method: 'POST',
     mode: 'cors',
@@ -71,7 +76,14 @@ async function requestImage(el, src) {
     body: JSON.stringify({
       "url": src
     })
+  }).catch(e => { 
+    return errorHandler();
   });
+  
+  // on error
+  if (!response.ok) {
+    return errorHandler();
+  }
 
   // get as type ArrayBuffer (Node)
   const buffer = await response.arrayBuffer();
@@ -91,13 +103,13 @@ async function requestImage(el, src) {
   }
 }
 
-// function to be triggered in case of error - simply use the original image
-function fallback(element,src) {
+// function to be triggered in case of error - simply use the original image or the placeholder if not available
+function fallback(el, src) {
   if (isValidURL(src)) {
-    element.src = src;
+    el.src = src;
   }
   else {
-    console.error('Something has gone wrong...', element);
+    console.error('Invalid src URL provided', el);
   }
 }
 

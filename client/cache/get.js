@@ -15,6 +15,9 @@ function getCacheItem(cacheName = window.location.hostname, imageURL) {
 
     const cache = await caches.open(`${cacheName}__imgaide`);
     const response = await cache.match(imageURL, options);
+    if (response) {
+      console.log(response.headers);
+    }
     // if cache item found
     if (response) {
       // cache is stored as a buffer, so need to pull it out as such and convert
