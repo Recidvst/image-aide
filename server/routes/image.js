@@ -37,6 +37,8 @@ router.post('/request', async (req, res) => {
       return errorHandler(req, res);
     }
 
+    // TODO: add tests to confirm that the response was an image and not e.g. json or text
+
     // get as type ArrayBuffer (Node)
     const buffer = await response.buffer();
     res.status(200).send({
