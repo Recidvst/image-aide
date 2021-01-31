@@ -1,17 +1,17 @@
 
 # ImageAide.js
 
-_In Progress_
+**_In Progress..._**
 
-#### A JavaScript tool to process and cache images without needing to host images externally. 
+### A JavaScript tool to process and cache images without needing to host images externally. 
 
 The frontend requests image processing from a dedicated Node API which fetches the request and manipulates the image before returning it to the frontend to hot replace the existing placeholder image. The returned images are cached in the user's browser to prevent unnecessary requests and create a super fast experience.
 
 ### Simple use
 
-1. Set the src attribute of the image you want to process/cache to a placeholder (example `noise.png` provided).
+1. Set the `src` attribute of the image you want to process/cache to a placeholder (example `noise.png` provided).
 2. Add a `data-imgaide-src` attribute to the image, with the real source URL. This must be a full, absolute URL.
-3. Include the ImageAide javascript file.
+3. Include the `ImageAide.js` file (not bundled for release as work still in progress).
 3. Load the page!
 
 ### Cache control
@@ -31,7 +31,7 @@ By default the images requested by ImageAide are cached in the user's browser us
 
 _coming soon_
 
-##### Todo
+### Todo
 
 - Image processing logic!
 - More server-side validation of requests
