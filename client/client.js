@@ -99,8 +99,10 @@ async function requestImage(el, src) {
     if (ObjectURL && ObjectURL.indexOf('blob:http') === 0) {
       // if ok, update image src
       el.src = ObjectURL; // TODO: we want to trigger IntersectionObserver here so that the image isn't loaded until its needed. Simple fadein animation.
+      // is there a cache expiry preference set?
+      const cacheExpiry = el.getAttribute('data-imgaide-cacheexpiry') || undefined;
       // add to cache
-      putCacheItemManually('testcachename', src, responseJSON.buffer);
+      putCacheItemManually('testcachename', src, responseJSON.buffer, cacheExpiry);
       return true;
     }
   }
