@@ -47,7 +47,6 @@ function triggerImageScraper() {
       }
       // otherwise fetch a fresh image
       else {
-        console.log('requestImage', nSrc);
         requestImage(element, nSrc);
       }
     }
@@ -79,28 +78,33 @@ async function requestImage(el, src) {
   }).catch(e => { 
     return errorHandler();
   });
-  
+
   // on error
   if (!response.ok) {
     return errorHandler();
   }
 
-  // get as type ArrayBuffer (Node)
-  const buffer = await response.arrayBuffer();
-  // convert to type Buffer (browser)
-  const arrayBufferView = new Uint8Array(buffer);
-  // convert to an ObjectURL
-  const ObjectURL = await bufferToImageURL(arrayBufferView);
+  // read response
+  const responseJSON = await response.json();
 
-  if (ObjectURL && ObjectURL.indexOf('blob:http') === 0) {
-    // if ok, update image src
-    el.src = ObjectURL; // TODO: we want to trigger IntersectionObserver here so that the image isn't loaded until its needed. Simple fadein animation.
-    // add to cache
-    putCacheItemManually('testcachename', src, arrayBufferView);
+  // if buffer returned successfully
+  if (!responseJSON.error && responseJSON.buffer) {
+    // returned from the server as type ArrayBuffer (Node)
+    const buffer = responseJSON.buffer.data || responseJSON.buffer;
+    // convert to type Buffer (browser)
+    const arrayBufferView = new Uint8Array(buffer);
+    // convert to an ObjectURL
+    const ObjectURL = await bufferToImageURL(arrayBufferView);
+  
+    if (ObjectURL && ObjectURL.indexOf('blob:http') === 0) {
+      // if ok, update image src
+      el.src = ObjectURL; // TODO: we want to trigger IntersectionObserver here so that the image isn't loaded until its needed. Simple fadein animation.
+      // add to cache
+      putCacheItemManually('testcachename', src, responseJSON.buffer);
+      return true;
+    }
   }
-  else {
-    console.error('Something has gone wrong...', el);
-  }
+  return false;
 }
 
 // function to be triggered in case of error - simply use the original image or the placeholder if not available

@@ -3,35 +3,39 @@ import isValidURL from '../util/isValidURL';
 import isArray from '../util/isArray';
 
 // ADD CACHE ITEM
-function addCacheItem(cacheName = window.location.hostname, imageURL) {
-  console.log(addCacheItem);
-  if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
+// function addCacheItem(cacheName = window.location.hostname, imageURL) {
+//   console.log(addCacheItem);
+//   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
 
-  caches.open(`${cacheName}__imgaide`).then( cache => {
-    cache.add(url).then( () => {
-      // console.log("Cache item added");
-    });
-  });
-}
+//   caches.open(`${cacheName}__imgaide`).then( cache => {
+//     cache.add(url).then( () => {
+//       // console.log("Cache item added");
+//     });
+//   });
+// }
 
 // ADD ARRAY OF CACHE ITEMS
-function addCacheItemArray(cacheName = window.location.hostname, imageArray) {
-  if (!isCacheAvailable || typeof imageURL === 'undefined' || !isArray(imageArray) ) return false;
-  // TODO: loop over array here and remove any URLs which are not valid
+// function addCacheItemArray(cacheName = window.location.hostname, imageArray) {
+//   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isArray(imageArray) ) return false;
+//   // TODO: loop over array here and remove any URLs which are not valid
 
-  caches.open(`${cacheName}__imgaide`).then( cache => {
-    cache.addAll(urls).then( () => {
-      // console.log("Cache array of items added");
-    });
-  });
-}
+//   caches.open(`${cacheName}__imgaide`).then( cache => {
+//     cache.addAll(urls).then( () => {
+//       // console.log("Cache array of items added");
+//     });
+//   });
+// }
 
 // ADD NEW/REPLACE EXISTING CACHE ITEM WITH PUT
 function putCacheItemManually(cacheName = window.location.hostname, imageURL, responseData) {
   if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
 
   caches.open(`${cacheName}__imgaide`).then( cache => {
-    cache.put(`${imageURL}`, new Response(responseData));
+    const dataJSON = JSON.stringify({
+      'timestamp': Date.now(),
+      'buffer': responseData
+    })
+    cache.put(`${imageURL}`, new Response(dataJSON));
   })
 }
 
@@ -41,14 +45,18 @@ function putCacheItemFromFetch(cacheName = window.location.hostname, imageURL) {
 
   fetch(imageURL).then(res => {
     return caches.open(`${cacheName}__imgaide`).then(cache => {
-      return cache.put(imageURL, res);
+      const dataJSON = JSON.stringify({
+        'timestamp': Date.now(),
+        'responseObj': res
+      })
+      return cache.put(imageURL, new Response(dataJSON));
     })
   })
 }
 
 export {
-  addCacheItem,
-  addCacheItemArray,
+  // addCacheItem,
+  // addCacheItemArray,
   putCacheItemManually,
   putCacheItemFromFetch,
 }
