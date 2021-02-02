@@ -17,15 +17,15 @@
   <div style="display: flex; flex-wrap: wrap;">
     <div>
       <h2>Standard (30 day cache)</h2>
-      <img src="./images/noise_500.png" data-imgaide-src="https://source.unsplash.com/random?crop=entropy&opacity=0.5" alt="test image">
+      <img src="./images/noise_500.png" data-imgaide-src="https://source.unsplash.com/random?crop=entropy&greyscale=true" data-imgaide-nocache alt="test image">
     </div>
     <div>
       <h2>Cache set to expire every 2 minutes</h2>
-      <img src="./images/noise_500.png" data-imgaide-src="https://source.unsplash.com/random?crop=entropy" data-imgaide-cacheexpiry="120000" alt="test image">
+      <img src="./images/noise_500.png" data-imgaide-src="https://source.unsplash.com/random?crop=entropy&greyscale=true&blur='500'" data-imgaide-nocache data-imgaide-cacheexpiry="120000" alt="test image">
     </div>
     <div>
       <h2>Broken src URL provided</h2>
-      <img src="./images/noise_500.png" data-imgaide-src="https://fakefakefakefakfakefakefake.com/?crop=attention&opacity=0.8" alt="test image">
+      <img src="./images/noise_500.png" data-imgaide-src="https://fakefakefakefakfakefakefake.com/?crop=attention&tint='rgb(100, 50, 90)'" data-imgaide-nocache alt="test image">
     </div>
     <div>
       <h2>No cache</h2>

@@ -86,6 +86,7 @@ async function requestImage(el, src) {
 
   // read response
   const responseJSON = await response.json();
+  console.log(responseJSON);
 
   // if buffer returned successfully
   if (!responseJSON.error && responseJSON.buffer) {
@@ -101,8 +102,12 @@ async function requestImage(el, src) {
       el.src = ObjectURL; // TODO: we want to trigger IntersectionObserver here so that the image isn't loaded until its needed. Simple fadein animation.
       // is there a cache expiry preference set?
       const cacheExpiry = el.getAttribute('data-imgaide-cacheexpiry') || undefined;
-      // add to cache
-      putCacheItemManually('testcachename', src, responseJSON.buffer, cacheExpiry);
+      // is there a cache true/false preference set?
+      const nocachePreference = el.hasAttribute('data-imgaide-nocache');
+      if (!nocachePreference) {
+        // add to cache
+        putCacheItemManually('testcachename', src, responseJSON.buffer, cacheExpiry);
+      }
       return true;
     }
   }
