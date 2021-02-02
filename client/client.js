@@ -37,7 +37,8 @@ function triggerImageScraper() {
       
       if (!nocachePreference) {
         // else check cache in case exact image has been requested before
-        inCacheURL = await getCacheItem('testcachename', nSrc);        
+        inCacheURL = await getCacheItem('testcachename', nSrc);     
+        console.warn(inCacheURL, `(${nSrc})`);
       }
 
       // replace image with cached image

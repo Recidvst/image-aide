@@ -4,8 +4,8 @@ import isValidURL from '../util/isValidURL';
 import { deleteCacheItem } from './delete';
 
 // READ CACHE ITEM (AND CONVERT BUFFER TO USABLE OBJECTURL)
-function getCacheItem(cacheName = window.location.hostname, imageURL) {
-  return new Promise( async function(resolve) {
+async function getCacheItem(cacheName = window.location.hostname, imageURL) {
+  // return new Promise( async function(resolve) {
     if (!isCacheAvailable || typeof imageURL === 'undefined' || !isValidURL(imageURL) ) return false;
     
     const options = {
@@ -37,7 +37,7 @@ function getCacheItem(cacheName = window.location.hostname, imageURL) {
       // if invalidated, delete cache item and resolve
       if (responseJSON.timestamp < (today - 60000)) {
         deleteCacheItem();
-        resolve(false);
+        return false;
       }
 
       if (!responseJSON.error && responseJSON.buffer) {
@@ -48,16 +48,16 @@ function getCacheItem(cacheName = window.location.hostname, imageURL) {
         // convert to an ObjectURL
         const ObjectURL = await bufferToImageURL(arrayBufferView);
         
-        resolve(ObjectURL);
+        return ObjectURL;
       }
       else {
-        resolve(false);
+        return false;
       }
     }
     else {
-      resolve(false);
+      return false;
     }
-  });
+  // });
 }
 
 export {
