@@ -10,7 +10,6 @@
 // 8. on server error, fetch the original image directly (not cropped etc.)
 // 9. OR, instead of base64 use blob as this can be directly converted into an img src
 
-import 'regenerator-runtime/runtime';
 import isValidURL from './util/isValidURL';
 import bufferToImageURL from './util/bufferToImageURL';
 import { putCacheItemManually } from './cache/add';
@@ -113,9 +112,6 @@ async function requestImage(el, src) {
 function fallback(el, src) {
   if (isValidURL(src)) {
     el.src = src;
-  }
-  else {
-    console.error('Invalid src URL provided', el);
   }
 }
 
