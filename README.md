@@ -34,7 +34,8 @@ _coming soon_
 ### Todo
 
 - Image processing logic!
+- Example page
 - More server-side validation of requests
-- Build scripts (Rollup?) for package publishing
-- Python (Flask) version of the Node API as an alternate choice
+- Test Rollup scripts before package publishing
 - Test suite
+- Python (Flask) version of the Node API as an alternate choice
