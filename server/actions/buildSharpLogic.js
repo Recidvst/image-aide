@@ -7,7 +7,7 @@ function buildSharpLogic(params) {
   // greyscale
   if (params.has('greyscale')) {
     let greyscaleVal = params.get('greyscale');
-    if ( typeof greyscaleVal === 'boolean') {
+    if ( typeof greyscaleVal === 'boolean' || greyscaleVal === 'true') {
       logicArr.push(function (imageToProcess) {return Promise.resolve(imageToProcess.greyscale(greyscaleVal))});      
     }
   }
