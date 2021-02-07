@@ -37,8 +37,7 @@ function triggerImageScraper() {
       
       if (!nocachePreference) {
         // else check cache in case exact image has been requested before
-        inCacheURL = await getCacheItem('testcachename', nSrc);     
-        console.warn(inCacheURL, `(${nSrc})`);
+        inCacheURL = await getCacheItem('testcachename', nSrc);
       }
 
       // replace image with cached image
@@ -86,7 +85,6 @@ async function requestImage(el, src) {
 
   // read response
   const responseJSON = await response.json();
-  console.log(responseJSON);
 
   // if buffer returned successfully
   if (!responseJSON.error && responseJSON.buffer) {
