@@ -29,11 +29,52 @@ By default the images requested by ImageAide are cached in the user's browser us
 
 ### Image processing (via [Sharp](https://sharp.pixelplumbing.com/ 'Sharp docs'))
 
-_coming soon_
+---
+
+- #### [Greyscale](https://sharp.pixelplumbing.com/api-colour#greyscale 'Sharp greyscale function')
+*Takes one parameter ( __Boolean__ ).*
+Usage:
+```html
+https://yoursite.com?greyscale=true
+```
+...this is equivalent to using Sharp directly like:
+```javascript
+sharp(input).greyscale(true)
+```
+
+---
+
+- #### [Tint](https://sharp.pixelplumbing.com/api-colour#tint 'Sharp tint function')
+*Takes one parameter ( RGB values | __String__ )*
+*The RGB strong must be formatted as in the example below.*
+Usage:
+```html
+https://yoursite.com?tint='rgb(100, 50, 90)'
+```
+...this is equivalent to using Sharp directly like:
+```javascript
+sharp(input).tint('rgb(100, 50, 90)')
+```
+
+---
+
+- #### [Blur](https://sharp.pixelplumbing.com/api-colour#blur 'Sharp blur function')
+*Takes one parameter ( sigma value | __Number/String__ )*
+*This is a value between 0.3 and 1000 representing the sigma of the Gaussian mask and will be converted to a Float.*
+Usage:
+```html
+https://yoursite.com?blur=10'
+```
+...this is equivalent to using Sharp directly like:
+```javascript
+sharp(input).blur(10)
+```
+
+---
 
 ### Todo
 
-- Image processing logic!
+- Add more image processing options
 - Example page
 - More server-side validation of requests
 - Test Rollup scripts before package publishing
