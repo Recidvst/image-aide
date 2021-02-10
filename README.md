@@ -131,6 +131,11 @@ sharp(input).rotate(120, {
 
 ---
 
+- #### [Resize](https://sharp.pixelplumbing.com/api-resize#resize 'Sharp resize function')
+*__Documentation coming soon. See Sharp for help__*
+
+---
+
 ### Todo
 
 - Add more image processing options
