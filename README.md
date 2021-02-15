@@ -3,16 +3,33 @@
 
 **_In Progress..._**
 
-### A JavaScript tool to process and cache images without needing to host images externally. 
+### A JavaScript/Node tool to process and cache images without needing to host images externally.
 
 The frontend requests image processing from a dedicated Node API which fetches the request and manipulates the image before returning it to the frontend to hot replace the existing placeholder image. The returned images are cached in the user's browser to prevent unnecessary requests and create a super fast experience.
 
-### Simple use
+---
 
-1. Set the `src` attribute of the image you want to process/cache to a placeholder (example `noise.png` provided).
-2. Add a `data-imgaide-src` attribute to the image, with the real source URL. This must be a full, absolute URL.
-3. Include the `ImageAide.js` file (not bundled for release as work still in progress).
-3. Load the page!
+### Usage
+
+_The tool requires two separate components to function_:
+- Javascript library (client-side)
+- Node API (server-side)
+
+#### Server
+
+1. Set up a simple Node server (on a Digital Ocean droplet or similar) and pull the `server` folder within this repo.
+2. Run `npm run prod` to start the server with `pm2`.
+
+#### Client
+
+1. Include the relevant bundle file from the `bundle` folder under `client`. There are bundle files available for ESM and CJS as well as plain JS.  
+2. For each of the image(s) you want to process, set the `src` attribute to a placeholder image (example `noise.png` provided).
+3. Add a `data-imgaide-src` data attribute to the image(s), with the real source URL. This must be a full, absolute URL.
+4. Add desired processing command parameters to the URL within `data-imgaide-src`. These apply the Sharp image processing functions.
+5. Add any caching data attributes you want to apply to the individual image.
+6. Load the page!
+
+---
 
 ### Cache control
 
@@ -27,9 +44,12 @@ By default the images requested by ImageAide are cached in the user's browser us
   - The expiry parameter can refer to either days or milliseconds. Any string longer than 5 characters will be taken as milliseconds, otherwise days.
   - Defaults to 30 (days)
 
-### Image processing (via [Sharp](https://sharp.pixelplumbing.com/ 'Sharp docs'))
-
 ---
+
+### Image processing (via [Sharp](https://sharp.pixelplumbing.com/ 'Sharp docs'))
+Image processing is handled by applying parameters to the URL provided to the the `data-imgaide-src` data attribute.
+
+You can apply as many of these as required, and they should be chained as normal e.g. `?greyscale=true&flip&blur=10`
 
 - #### [Greyscale](https://sharp.pixelplumbing.com/api-colour#greyscale 'Sharp greyscale function')
 *Takes one parameter ( __Boolean__ ).*
