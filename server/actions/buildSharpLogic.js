@@ -145,7 +145,7 @@ function buildSharpLogic(params) {
     }
     // handle kernel
     let kernel = 'lanczos3';
-    if (params.has('kernel')) {
+    if (params.has('kernel') && params.has('strategy')) { // only applies to the strategy method
       let kernelVal = params.get('kernel').replace(/"|'/g, "");      
       if (typeof kernelVal === 'string') {
         kernel = kernelVal;
