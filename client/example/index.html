@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImageAide.js example page</title>
+  <link rel="stylesheet" href="./example.scss">
+</head>
+<body>
+
+  <header class="header">
+    <h1 class="page-title">ImageAide.js examples</h1>
+    <a href="https://github.com/Recidvst/image-aide" title="" target="_blank">View project on GitHub</a>
+  </header>
+  
+  <div class="image-gallery">
+    <!-- Standard image example -->
+    <div class="image-item">
+      <h2 class="image-item__title">Non-ImageAide image</h2>
+      <img class="image-item__img" src="https://source.unsplash.com/random" alt="Standard image example">
+      <div class="image-item__timings">
+        <p>
+          <strong>Triggered:</strong><span>xxx</span>
+          <strong>Finished:</strong><span>yyy</span>
+        </p>
+      </div>
+    </div>
+    <!-- Cached images examples -->
+    <div class="image-item">
+      <h2 class="image-item__title">ImageAide (cached 1 min)</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://source.unsplash.com/random" data-imgaide-cacheexpiry="60000" alt="ImageAide cache example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">ImageAide (un-cached)</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://source.unsplash.com/random" data-imgaide-nocache alt="ImageAide no cache example image">
+    </div>
+    <!-- Processed images examples-->
+    <div class="image-item">
+      <h2 class="image-item__title">Greyscale</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?greyscale=true" alt="ImageAide greyscale example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Tint</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?tint='rgb(100, 50, 90)'" alt="ImageAide tint example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Blur</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?blur=5" alt="ImageAide blur example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Trim</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?trim==30" alt="ImageAide trim example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Flip</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?flip" alt="ImageAide flip example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Flop</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?flop" alt="ImageAide flop example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Rotate</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?rotate=120" alt="ImageAide rotate example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Resize (manual)</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?width=300&height=150" alt="ImageAide width and height example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Resize (scaled)</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?scaleHeight=0.75" alt="ImageAide scaleWidth example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Resize with Position</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-1000.jpg?width=1000&height=300&fit=cover&position='right bottom'" alt="ImageAide scaleWidth example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Resize with Entropy</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-1000.jpg?width=1000&height=500&fit=cover&strategy=entropy" alt="ImageAide scaleWidth example image">
+    </div>
+    <div class="image-item">
+      <h2 class="image-item__title">Resize (contain) with background</h2>
+      <img class="image-item__img" src="../images/noise_500.png" data-imgaide-src="https://raw.githubusercontent.com/Recidvst/recidvst-images/master/speckled-starling-500.jpg?width=300&height=300&fit=contain&background='rgb(100, 50, 90)'" alt="ImageAide scaleWidth example image">
+    </div>
+  </div>
+</body>
+
+<!-- Parcel local dev -->
+<script src="../client.js"></script>
+<!-- Testing bundle builds -->
+<!-- <script src="./bundle/imgaide.iife.js"></script> -->
+</html>

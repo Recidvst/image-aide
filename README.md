@@ -168,7 +168,7 @@ sharp(input).rotate(120, {
 - #### [Resize](https://sharp.pixelplumbing.com/api-resize#resize 'Sharp resize function')
 *This consists of a group of related functions relating to resizing an image. They are best described separately as they are implemented via separate parameters in ImageAide*
 
-##### Width and height
+##### `Width and height`
 *These are two separate parameters and can be used together or separately.*
 
 *Both width and height take one parameter ( __Number/String__ ). This is a size in pixels.*
@@ -184,10 +184,10 @@ sharp(input).resize({
 })
 ```
 
-##### Scale width and scale height
+##### `Scale width and scale height`
 *This consists of two parameters which can be used together or separately as per width/height: `scaleWidth` & `scaleHeight`*
 
-*Both scaleWidth and scaleHeight take one parameter ( __Number/String__ ). This is a percentage size expressed as a decimal fraction and must be within the bounds 0.1 -> 1.*
+*Both scaleWidth and scaleHeight take one parameter ( __Number/String__ ). This is a percentage size expressed as a decimal fraction and must be within the bounds 0.1 -> 100.*
 
 *The scaling is based on the inherent size values of the image itself.*
 
@@ -201,7 +201,7 @@ https://yoursite.com?scaleWidth=0.5
 sharp(input).resize(Math.round(width * 0.5))
 ```
 
-##### Fit
+##### `Fit`
 *When width/height or scaleWidth/scaleHeight are used, this parameter can be set to control the method by which the image should fit the newly defined size.*
 
 *Fit takes one parameter ( __String__ ). This is the fit method and must be one of the below*
@@ -222,7 +222,7 @@ sharp(input).resize({
 })
 ```
 
-##### Position
+##### `Position`
 *The position parameter is used to control the positioning of the image when a `fit` method is applied.*
 
 *Position takes one parameter ( __String__ ). This must be one of the below options:*
@@ -241,7 +241,7 @@ sharp(input).resize({
 })
 ```
 
-##### Gravity
+##### `Gravity`
 *In place of position the Gravity parameter is also available.*
 
 *Gravity takes one parameter ( __String__ ). This must be one of the below options:*
@@ -260,29 +260,30 @@ sharp(input).resize({
 })
 ```
 
-##### Strategy
+##### `Strategy`
 *As well as the specific positioning options provided by `position` and `gravity`, it is also possible to provided a `strategy` value which aims to calculate the position to best show off the content of the image.*
 
 *Quoting Sharp's docs: "The experimental strategy-based approach resizes so one dimension is at its target length then repeatedly ranks edge regions, discarding the edge with the lowest score based on the selected strategy."*
+
+*__Strategy is only available when using a `fit` of `cover`.__*
 
 *Strategy takes one parameter ( __String__ ). This must be one of the below options:*
 
 - `entropy`: focus on the region with the highest [Shannon entropy](https://en.wikipedia.org/wiki/Entropy_%28information_theory%29 'Entropy information theory information').
 - `attention`: focus on the region with the highest luminance frequency, colour saturation and presence of skin tones.
-*__Strategy is only available when using the `cover` fit method.__*
 
 Usage:
 ```html
-https://yoursite.com?gravity=southwest
+https://yoursite.com?strategy=entropy
 ```
 ```javascript
 sharp(input).resize({
-  gravity: 'southwest'
+  strategy: 'entropy'
 })
 ```
 
-##### Kernel
-__Untested work in progress__
+##### `Kernel`
+__*Untested work in progress*__
 
 *It is possible to specify the desired interpolation kernel for use with the `strategy` method.*
 
@@ -304,7 +305,7 @@ sharp(input).resize({
 })
 ```
 
-##### Background
+##### `Background`
 *When using a `fit` of `contain`, the image may be smaller than the original size, leaving empty space which can be filled with the background parameter.*
 
 *Background takes one parameter ( RGB values | __String__ ). This must be an RGB string value. Defaults to black.*
@@ -319,7 +320,7 @@ sharp(input).resize({
 })
 ```
 
-##### withoutEnlargement 
+##### `withoutEnlargement` 
 *Takes one parameter ( __Boolean__ ). Defaults to `false`.*
 
 *Setting `withoutEnlargement` to `true` will prevent Sharp enlarging the image if the width and height are already less than the user specified dimensions.*
@@ -334,7 +335,7 @@ sharp(input).resize({
 })
 ```
 
-##### fastShrinkOnLoad 
+##### `fastShrinkOnLoad` 
 *Takes one parameter ( __Boolean__ ). Defaults to `true`.*
 
 *Setting `fastShrinkOnLoad` to `true` will allow Sharp to take greater advantage of the JPEG and WebP shrink-on-load feature. but this can also lead to a slight moiré pattern on some images.*
@@ -355,7 +356,7 @@ sharp(input).resize({
 
 - Add more image processing options
 - Improve documentation, particularly of the Sharp options.
-- Example page
+- Style up and improve example page
 - More server-side validation of requests
 - Test Rollup scripts before package publishing
 - Test suite

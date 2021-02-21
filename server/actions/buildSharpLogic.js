@@ -93,14 +93,14 @@ function buildSharpLogic(params) {
     let scaleWidth = null;
     if (params.has('scaleWidth')) {
       let scaleWidthVal = parseFloat(params.get('scaleWidth').replace(/"|'/g, ""));
-      if (scaleWidthVal && scaleWidthVal > 0 && scaleWidthVal <= 1) {
+      if (scaleWidthVal && scaleWidthVal > 0 && scaleWidthVal <= 100) {
         scaleWidth = scaleWidthVal;
       }
     }
     let scaleHeight = null;
     if (params.has('scaleHeight')) {
       let scaleHeightVal = parseFloat(params.get('scaleHeight').replace(/"|'/g, ""));
-      if (scaleHeightVal && scaleHeightVal > 0 && scaleHeightVal <= 1) {
+      if (scaleHeightVal && scaleHeightVal > 0 && scaleHeightVal <= 100) {
         scaleHeight = scaleHeightVal;
       }
     }
@@ -137,8 +137,8 @@ function buildSharpLogic(params) {
     }
     // handle background
     let background = '#000000';
-    if (params.has('resizeBackground')) {
-      let backgroundVal = params.get('resizeBackground').replace(/"|'/g, "");
+    if (params.has('background') && fit === 'contain') {
+      let backgroundVal = params.get('background').replace(/"|'/g, "");
       if (typeof backgroundVal === 'string' && backgroundVal.indexOf('rgb') === 0) {
         background = backgroundVal;
       }

@@ -1,16 +1,7 @@
 // client triggers requests for images //
 
-// 1. loop over images to find those that need sending off
-// 2. check if that url (or some other identifier) has been requested before and so is in cache
-// 3. if in cache, return the cached base64 string
-// 4. decode the base64 string and change the image src
-// 5. if not in cache then send request to the server
-// 6. receive server response and decode base64 string
-// 7. add to cache and change the image src
-// 8. on server error, fetch the original image directly (not cropped etc.)
-// 9. OR, instead of base64 use blob as this can be directly converted into an img src
-
 import isValidURL from './util/isValidURL';
+import stripLeadingDotSlash from './util/stripLeadingDotSlash';
 import bufferToImageURL from './util/bufferToImageURL';
 import { putCacheItemManually } from './cache/add';
 import { getCacheItem } from './cache/get';
@@ -23,12 +14,28 @@ function triggerImageScraper() {
     let nSrc = element.getAttribute('data-imgaide-src');
     // check validity and then trigger processing or fallback
     if (nSrc && isValidURL(nSrc)) {
-      // handle absolute vs relative
-      if(/^(:\/\/)/.test(nSrc)){
-        nSrc = 'http://'.concat(nSrc);
+      
+      if (nSrc.charAt(0) === '.' || nSrc.charAt(0) === '/') {
+        // if local image, strip leading . & /
+        nSrc = stripLeadingDotSlash(nSrc);
+        // append domain to path
+        if (nSrc.indexOf(window.location.hostname) === -1) {
+          nSrc = window.location.hostname + (location.port ? ':' + location.port : '') + '/' + nSrc; 
+        } 
+      }  
+      // if remote url, handle absolute vs relative
+      else {
+        if(/^(:\/\/)/.test(nSrc)){
+          nSrc = 'http://'.concat(nSrc);
+        }
+        if(!/^(f|ht)tps?:\/\//i.test(nSrc)){
+          nSrc = 'https://'.concat(nSrc);
+        }   
       }
-      if(!/^(f|ht)tps?:\/\//i.test(nSrc)){
-        nSrc = 'https://'.concat(nSrc);
+
+      // if localhost we can't send to server
+      if (nSrc.indexOf('localhost:') > -1) {
+        fallback(element, `http://${nSrc}`);
       }
       
       // if nocache attribute set then skip cache (so content is always fresh)
@@ -43,6 +50,7 @@ function triggerImageScraper() {
       // replace image with cached image
       if (inCacheURL && inCacheURL.indexOf('blob:http') === 0) {
         element.src = inCacheURL;
+        element.setAttribute('data-imgaide-complete', Date.now()); // set finished time as unix timestamp in data attribute
       }
       // otherwise fetch a fresh image
       else {
@@ -98,6 +106,7 @@ async function requestImage(el, src) {
     if (ObjectURL && ObjectURL.indexOf('blob:http') === 0) {
       // if ok, update image src
       el.src = ObjectURL; // TODO: we want to trigger IntersectionObserver here so that the image isn't loaded until its needed. Simple fadein animation.
+      el.setAttribute('data-imgaide-complete', Date.now());
       // is there a cache expiry preference set?
       const cacheExpiry = el.getAttribute('data-imgaide-cacheexpiry') || undefined;
       // is there a cache true/false preference set?
@@ -116,6 +125,7 @@ async function requestImage(el, src) {
 function fallback(el, src) {
   if (isValidURL(src)) {
     el.src = src;
+    el.setAttribute('data-imgaide-complete', Date.now());
   }
 }
 
