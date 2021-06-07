@@ -1,7 +1,9 @@
 
 # ImageAide.js
 
-**_In Progress..._**
+### *This is on hold for now due to lack of time but I will hopefully return to it later...*
+
+---
 
 ### A JavaScript/Node tool to process and cache images without needing to host images externally.
 
